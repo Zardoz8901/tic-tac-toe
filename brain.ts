@@ -6,17 +6,21 @@ const gameBoard = {
   ],
 };
 
-const sanitizeString = (stringIn: string | null) => {
+const sanitizeString = (stringIn: string) => {
   const string = stringIn.toLowerCase();
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
 const playerSelect = () => {
   const player1 = () => {
-    const name = prompt("What hail thee far-stranger?");
+    let name = prompt("What hail thee far-stranger?");
+    name
+      ? ""
+      : (name = prompt("Come again, I couldn't hear you over the din?"));
     const promptSymbol = prompt(
       ` Ah ${name}, a name of potential! Now choose. Nought or Cross, traveler?`
     );
+    console.log(name);
     const symbol = sanitizeString(promptSymbol);
     const turnOrder = 1;
     return { name, symbol, turnOrder };
@@ -26,11 +30,11 @@ const playerSelect = () => {
     const symbolChoice = () => {
       if (player1.symbol === "Nought") {
         return "Cross";
-      } else {
+      } else if (player1.symbol === "Cross") {
         return "Nought";
       }
     };
-    const symbolAlert = alert(
+    alert(
       `${name}, a name best suited to the ${symbolChoice()}. Now we begin our bloody game!`
     );
     const symbol = symbolChoice();
