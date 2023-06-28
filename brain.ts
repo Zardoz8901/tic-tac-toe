@@ -12,7 +12,7 @@ const sanitizeString = (stringIn: string) => {
 };
 
 const playerSelect = () => {
-  const player1 = () => {
+  const firstPlayerInit = () => {
     let name = prompt("What hail thee far-stranger?");
     name
       ? ""
@@ -20,17 +20,18 @@ const playerSelect = () => {
     const promptSymbol = prompt(
       ` Ah ${name}, a name of potential! Now choose. Nought or Cross, traveler?`
     );
-    console.log(name);
     const symbol = sanitizeString(promptSymbol);
     const turnOrder = 1;
     return { name, symbol, turnOrder };
   };
-  const player2 = (player1: any) => {
-    const name = prompt(`And what is thine name, friend of ${player1.name} ?`);
+  const secondPlayerInit = (firstPlayerInit: any) => {
+    const name = prompt(
+      `And what is thine name, friend of ${firstPlayerInit.name} ?`
+    );
     const symbolChoice = () => {
-      if (player1.symbol === "Nought") {
+      if (firstPlayerInit.symbol === "Nought") {
         return "Cross";
-      } else if (player1.symbol === "Cross") {
+      } else if (firstPlayerInit.symbol === "Cross") {
         return "Nought";
       }
     };
@@ -41,9 +42,9 @@ const playerSelect = () => {
     const turnOrder = 2;
     return { name, symbol, turnOrder };
   };
-  const firstPlayer = player1();
-  const secondPlayer = player2(firstPlayer);
-  return console.log(firstPlayer), console.log(secondPlayer);
+  const player1 = firstPlayerInit();
+  const player2 = secondPlayerInit(player1);
+  return console.log(player1), console.log(player2);
 };
 
 const gameFlow = (() => {
