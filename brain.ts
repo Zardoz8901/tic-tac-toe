@@ -12,14 +12,18 @@ const sanitizeString = (stringIn: string) => {
 };
 
 const playerSelect = () => {
+  const firstPlayerNull = () => {
+    let name = prompt("Come again, I couldn't hear you over the din?");
+    name ? "" : firstPlayerInit();
+    return name;
+  };
   const firstPlayerInit = () => {
     let name = prompt("What hail thee far-stranger?");
-    name
-      ? ""
-      : (name = prompt("Come again, I couldn't hear you over the din?"));
+    name ? "" : firstPlayerNull();
     const promptSymbol = prompt(
-      ` Ah ${name}, a name of potential! Now choose. Nought or Cross, traveler?`
+      ` Ah ${name}, a name of potential! Now choose. Nough\t or Cross, traveler?`
     );
+    console.log(name);
     const symbol = sanitizeString(promptSymbol);
     const turnOrder = 1;
     return { name, symbol, turnOrder };
