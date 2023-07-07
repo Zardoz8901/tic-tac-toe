@@ -1,14 +1,11 @@
 "use strict";
-const gameBoard = () => {
-    [
-        [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0],
-    ];
+const initGameboard = () => {
+    const gameBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    return gameBoard;
 };
-const sanitizeString = (stringIn) => {
-    const string = stringIn.toLowerCase();
-    return string.charAt(0).toUpperCase() + string.slice(1);
+const insertMove = (gameBoard, symbol, position) => {
+    gameBoard.splice(position, position, symbol);
+    console.log(gameBoard);
 };
 const playerSelect = () => {
     const initPlayer = (playerNumber) => {
@@ -21,13 +18,14 @@ const playerSelect = () => {
         }
         return { name, symbol, playOrder };
     };
-    const player1 = initPlayer(1);
-    const player2 = initPlayer(2);
-    console.log(player1);
-    console.log(player2);
-    return { player1, player2 };
+    const playerOne = initPlayer(1);
+    const playerTwo = initPlayer(2);
+    console.log(playerOne);
+    console.log(playerTwo);
+    return { playerOne, playerTwo };
 };
 const gameFlow = (() => {
+    const newGame = initGameboard();
+    insertMove(newGame, "X", 8);
     playerSelect();
-    console.log(player1.name);
 })();
