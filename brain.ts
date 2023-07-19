@@ -1,12 +1,12 @@
 const initGameboard = () => {
   const gameBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-
   return gameBoard;
 };
 
 const insertMove = (gameBoard: number[], symbol: string, position: number) => {
-  gameBoard.splice(position, position, symbol);
+  gameBoard.splice(position, 1, symbol);
   console.log(gameBoard);
+  return gameBoard;
 };
 
 const playerSelect = () => {
@@ -30,5 +30,7 @@ const playerSelect = () => {
 const gameFlow = (() => {
   const newGame = initGameboard();
   insertMove(newGame, "X", 8);
+  insertMove(newGame, "O", 1);
+  insertMove(newGame, "X", 3);
   playerSelect();
 })();

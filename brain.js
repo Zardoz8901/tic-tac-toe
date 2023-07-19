@@ -4,8 +4,9 @@ const initGameboard = () => {
     return gameBoard;
 };
 const insertMove = (gameBoard, symbol, position) => {
-    gameBoard.splice(position, position, symbol);
+    gameBoard.splice(position, 1, symbol);
     console.log(gameBoard);
+    return gameBoard;
 };
 const playerSelect = () => {
     const initPlayer = (playerNumber) => {
@@ -27,5 +28,7 @@ const playerSelect = () => {
 const gameFlow = (() => {
     const newGame = initGameboard();
     insertMove(newGame, "X", 8);
+    insertMove(newGame, "O", 1);
+    insertMove(newGame, "X", 3);
     playerSelect();
 })();
