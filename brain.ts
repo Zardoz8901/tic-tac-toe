@@ -3,6 +3,17 @@ const initGameboard = () => {
   return gameBoard;
 };
 
+const gridSelector = () => {
+  const gridList = document.querySelectorAll("[data]");
+  const gridArray = [...gridList];
+  gridArray.forEach((span) => {
+    span.addEventListener("click", (e) => {
+      console.log(span);
+    });
+  });
+  console.log(gridArray);
+};
+
 const insertMove = (gameBoard: number[], symbol: string, position: number) => {
   gameBoard.splice(position, 1, symbol);
   console.log(gameBoard);
@@ -28,9 +39,9 @@ const playerSelect = () => {
 };
 
 const gameFlow = (() => {
+  gridSelector();
   const newGame = initGameboard();
-  insertMove(newGame, "X", 8);
-  insertMove(newGame, "O", 1);
-  insertMove(newGame, "X", 3);
+  // insertMove(newGame, "X", 8);
+  // insertMove(newGame, "O", 1);
   playerSelect();
 })();

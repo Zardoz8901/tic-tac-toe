@@ -3,6 +3,16 @@ const initGameboard = () => {
     const gameBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     return gameBoard;
 };
+const gridSelector = () => {
+    const gridList = document.querySelectorAll("[data]");
+    const gridArray = [...gridList];
+    gridArray.forEach((span) => {
+        span.addEventListener("click", (e) => {
+            console.log(span);
+        });
+    });
+    console.log(gridArray);
+};
 const insertMove = (gameBoard, symbol, position) => {
     gameBoard.splice(position, 1, symbol);
     console.log(gameBoard);
@@ -26,9 +36,9 @@ const playerSelect = () => {
     return { playerOne, playerTwo };
 };
 const gameFlow = (() => {
+    gridSelector();
     const newGame = initGameboard();
-    insertMove(newGame, "X", 8);
-    insertMove(newGame, "O", 1);
-    insertMove(newGame, "X", 3);
+    // insertMove(newGame, "X", 8);
+    // insertMove(newGame, "O", 1);
     playerSelect();
 })();
