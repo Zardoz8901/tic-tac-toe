@@ -48,12 +48,10 @@ h6 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto;
-
   width: 600px;
   height: 600px;
   font-size: 60px;
   gap: 10px;
-  outline: auto;
 }
 
 #game-grid > span {

@@ -4,11 +4,11 @@ const initGameboard = () => {
     return gameBoard;
 };
 const gridSelector = () => {
-    const gridList = document.querySelectorAll("[data]");
+    const gridList = document.querySelectorAll("span");
     const gridArray = [...gridList];
     gridArray.forEach((span) => {
         span.addEventListener("click", (e) => {
-            console.log(span);
+            console.log(span.dataset.gridOrigin);
         });
     });
     console.log(gridArray);
