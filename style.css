@@ -44,3 +44,23 @@ h6 {
 }
 /* Reset End */
 
+#game-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+
+  width: 600px;
+  height: 600px;
+  font-size: 60px;
+  gap: 10px;
+  outline: auto;
+}
+
+#game-grid > span {
+  background-color: lightgrey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
