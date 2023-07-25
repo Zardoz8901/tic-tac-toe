@@ -54,7 +54,7 @@ h6 {
   gap: 10px;
 }
 
-#game-grid > span {
+#game-grid > div {
   background-color: lightgrey;
   display: flex;
   justify-content: center;

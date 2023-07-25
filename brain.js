@@ -3,28 +3,36 @@ const initGameboard = () => {
     const gameBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     return gameBoard;
 };
-const gridSelector = () => {
-    const gridList = document.querySelectorAll("span");
-    const gridArray = [...gridList];
-    gridArray.forEach((span) => {
-        span.addEventListener("click", (e) => {
-            console.log(span.dataset.gridOrigin);
-        });
-    });
-    console.log(gridArray);
+const initMoveTracker = () => {
+    const moveTracker = [];
+    return moveTracker;
 };
 const insertMove = (gameBoard, symbol, position) => {
     gameBoard.splice(position, 1, symbol);
     console.log(gameBoard);
     return gameBoard;
 };
+const playerRotation = () => { };
+const gridSelector = (moveTracker, newGame) => {
+    const gridList = document.querySelectorAll("#game-grid> div");
+    const gridArray = [...gridList];
+    gridArray.forEach((div) => {
+        div.addEventListener("click", () => {
+            const gridOrigin = div.dataset.gridOrigin;
+            moveTracker.push(gridOrigin);
+            console.log(moveTracker);
+            console.log(gridOrigin);
+            return insertMove(newGame, "X", gridOrigin);
+        });
+    });
+};
 const playerSelect = () => {
     const initPlayer = (playerNumber) => {
         const playOrder = playerNumber;
         const name = "Player" + playerNumber;
-        const symbol = "Cross";
+        const symbol = "X";
         if (playerNumber === 2) {
-            const symbol = "Nought";
+            const symbol = "O";
             return { name, symbol, playOrder };
         }
         return { name, symbol, playOrder };
@@ -36,9 +44,9 @@ const playerSelect = () => {
     return { playerOne, playerTwo };
 };
 const gameFlow = (() => {
-    gridSelector();
     const newGame = initGameboard();
-    // insertMove(newGame, "X", 8);
+    const moveTracker = initMoveTracker();
+    gridSelector(moveTracker, newGame);
     // insertMove(newGame, "O", 1);
     playerSelect();
 })();
