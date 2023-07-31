@@ -7,25 +7,6 @@ const initMoveTracker = () => {
     const moveTracker = [];
     return moveTracker;
 };
-const insertMove = (gameBoard, symbol, position) => {
-    gameBoard.splice(position, 1, symbol);
-    console.log(gameBoard);
-    return gameBoard;
-};
-const playerRotation = () => { };
-const gridSelector = (moveTracker, newGame) => {
-    const gridList = document.querySelectorAll("#game-grid> div");
-    const gridArray = [...gridList];
-    gridArray.forEach((div) => {
-        div.addEventListener("click", () => {
-            const gridOrigin = div.dataset.gridOrigin;
-            moveTracker.push(gridOrigin);
-            console.log(moveTracker);
-            console.log(gridOrigin);
-            return insertMove(newGame, "X", gridOrigin);
-        });
-    });
-};
 const playerSelect = () => {
     const initPlayer = (playerNumber) => {
         const playOrder = playerNumber;
@@ -39,9 +20,32 @@ const playerSelect = () => {
     };
     const playerOne = initPlayer(1);
     const playerTwo = initPlayer(2);
-    console.log(playerOne);
-    console.log(playerTwo);
     return { playerOne, playerTwo };
+};
+const insertMove = (gameBoard, symbol, position) => {
+    const players = playerSelect();
+    const player1 = players.playerOne;
+    const player2 = players.playerTwo;
+    console.log(player1, player2);
+    gameBoard.splice(position, 1, symbol);
+    console.log(gameBoard);
+    return gameBoard;
+};
+const gridSelector = (moveTracker, newGame) => {
+    const gridList = document.querySelectorAll("#game-grid> div");
+    const gridArray = [...gridList];
+    gridArray.forEach((div) => {
+        div.addEventListener("click", () => {
+            const gridOrigin = div.dataset.gridOrigin;
+            moveTracker.push(gridOrigin);
+            // implement player turn rotation
+            let symbol = "X";
+            if (moveTracker.length % 2 === 0) {
+                symbol = "O";
+            }
+            return insertMove(newGame, symbol, gridOrigin);
+        });
+    });
 };
 const gameFlow = (() => {
     const newGame = initGameboard();
