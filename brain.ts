@@ -25,11 +25,10 @@ const playerSelect = () => {
 };
 
 const insertMove = (gameBoard: number[], symbol: string, position) => {
-  const players = playerSelect();
-  const player1 = players.playerOne;
-  const player2 = players.playerTwo;
-  console.log(player1, player2);
-  //position.textContent(`${symbol}`);
+  // const players = playerSelect();
+  // const player1 = players.playerOne;
+  // const player2 = players.playerTwo;
+  // console.log(player1, player2);
   gameBoard.splice(position, 1, symbol);
   console.log(gameBoard);
   return gameBoard;
@@ -49,6 +48,7 @@ const gridSelector = (moveTracker, newGame) => {
         symbol = "O";
       }
       //  inject player symbol
+      div.style.pointerEvents = "none";
       div.textContent = symbol;
       return insertMove(newGame, symbol, gridOrigin);
     });
