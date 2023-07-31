@@ -36,7 +36,6 @@ const gridSelector = (moveTracker, newGame) => {
     const gridArray = [...gridList];
     gridArray.forEach((div) => {
         div.addEventListener("click", () => {
-            console.log(div);
             const gridOrigin = div.dataset.gridOrigin;
             moveTracker.push(gridOrigin);
             // implement player turn rotation
@@ -45,7 +44,7 @@ const gridSelector = (moveTracker, newGame) => {
                 symbol = "O";
             }
             //  inject player symbol
-            div.style.pointerEvents = "none";
+            div.classList.add("noclick");
             div.textContent = symbol;
             return insertMove(newGame, symbol, gridOrigin);
         });
