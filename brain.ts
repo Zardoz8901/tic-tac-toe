@@ -29,7 +29,7 @@ const insertMove = (gameBoard: number[], symbol: string, position) => {
   const player1 = players.playerOne;
   const player2 = players.playerTwo;
   console.log(player1, player2);
-
+  //position.textContent(`${symbol}`);
   gameBoard.splice(position, 1, symbol);
   console.log(gameBoard);
   return gameBoard;
@@ -40,6 +40,7 @@ const gridSelector = (moveTracker, newGame) => {
   const gridArray = [...gridList];
   gridArray.forEach((div) => {
     div.addEventListener("click", () => {
+      console.log(div);
       const gridOrigin = div.dataset.gridOrigin;
       moveTracker.push(gridOrigin);
       // implement player turn rotation
@@ -47,6 +48,8 @@ const gridSelector = (moveTracker, newGame) => {
       if (moveTracker.length % 2 === 0) {
         symbol = "O";
       }
+      //  inject player symbol
+      div.textContent = symbol;
       return insertMove(newGame, symbol, gridOrigin);
     });
   });
