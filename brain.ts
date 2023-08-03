@@ -1,23 +1,9 @@
 const initGameboard = () => {
-  const gameBoard = [
-    [0, 0],
-    [0, 1],
-    [0, 2],
-    [1, 0],
-    [1, 1],
-    [1, 2],
-    [2, 0],
-    [2, 1],
-    [2, 2],
-  ];
+  // Magic Square
+  const gameBoard = [8, 1, 6, 3, 5, 7, 4, 9, 2];
   const playerOnePositions = [];
   const playerTwoPositions = [];
   return { gameBoard, playerOnePositions, playerTwoPositions };
-};
-
-const initMoveTracker = () => {
-  const moveTracker = [];
-  return moveTracker;
 };
 
 const initPlayer = (playerNumber: number) => {
@@ -31,6 +17,34 @@ const initPlayer = (playerNumber: number) => {
   return { name, symbol, playOrder };
 };
 
+const winCondition = (playerOne, playerTwo) => {
+  const perm = (array, length) => {
+    return array.flatMap((v, i) =>
+      length > 1
+        ? perm(array.slice(i + 1), length - 1).map((w) => [v, ...w])
+        : [[v]]
+    );
+  };
+  if (playerOne.length >= 3 || playerTwo.length >= 3) {
+    const playerOnePerm = perm(playerOne, 3);
+    playerOnePerm.forEach((element) => {
+      const elemReduce = element.reduce((sum, current) => sum + current, 0);
+      if (elemReduce === 15) {
+        console.log("player one wins");
+      }
+    });
+    const playerTwoPerm = perm(playerTwo, 3);
+    playerTwoPerm.forEach((element) => {
+      const elemReduce = element.reduce((sum, current) => sum + current, 0);
+      if (elemReduce === 15) {
+        console.log("player two wins");
+      }
+    });
+  } else {
+    console.log("no winner");
+  }
+};
+
 const insertMove = (gameBoard: number[], symbol: string, position) => {
   const playerOne = initPlayer(1);
   const playerTwo = initPlayer(2);
@@ -42,22 +56,18 @@ const insertMove = (gameBoard: number[], symbol: string, position) => {
   } else {
     playerTwoPositions.push(gameState[position]);
   }
+  winCondition(playerOnePositions, playerTwoPositions);
   gameState.splice(position, 1, symbol);
   const openPositions = gameState.filter((s) => s != "X" && s != "O");
-  // for (const [key, value] of Object.entries(gameBoard)) {
-  //   console.log(`${key}:${value}`);
-  // }
-  console.log(playerOnePositions);
-  console.log(playerTwoPositions);
-  console.log(gameState);
-  console.log(openPositions);
-
+  // console.log(playerOnePositions);
+  // console.log(playerTwoPositions);
   return { gameBoard, openPositions, playerOnePositions };
 };
 
-const gridSelector = (moveTracker, newGame) => {
+const gridSelector = (newGame) => {
   const gridList = document.querySelectorAll("#game-grid> div");
   const gridArray = [...gridList];
+  const moveTracker = [];
   gridArray.forEach((div) => {
     div.addEventListener("click", () => {
       const gridOrigin = div.dataset.gridOrigin;
@@ -77,6 +87,5 @@ const gridSelector = (moveTracker, newGame) => {
 
 const gameFlow = (() => {
   const newGame = initGameboard();
-  const moveTracker = initMoveTracker();
-  const gridSelect = gridSelector(moveTracker, newGame);
+  const gridSelect = gridSelector(newGame);
 })();
