@@ -44,6 +44,12 @@ h6 {
 }
 /* Reset End */
 
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #game-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -59,6 +65,7 @@ h6 {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 160px;
   color: rgb(38, 38, 38);
   height: 200px;
   width: 200px;
