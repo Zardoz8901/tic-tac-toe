@@ -17,30 +17,36 @@ const initPlayer = (playerNumber) => {
     return { name, symbol, playOrder };
 };
 const winCondition = (playerOne, playerTwo) => {
+    // Permutation city, comment each line of the process break down how it works
+    let win = false;
     const perm = (array, length) => {
         return array.flatMap((v, i) => length > 1
             ? perm(array.slice(i + 1), length - 1).map((w) => [v, ...w])
             : [[v]]);
     };
-    if (playerOne.length >= 3 || playerTwo.length >= 3) {
+    if (win === false) {
         const playerOnePerm = perm(playerOne, 3);
+        const playerTwoPerm = perm(playerTwo, 3);
         playerOnePerm.forEach((element) => {
             const elemReduce = element.reduce((sum, current) => sum + current, 0);
             if (elemReduce === 15) {
-                console.log("player one wins");
+                win = true;
+            }
+            else {
+                win = false;
             }
         });
-        const playerTwoPerm = perm(playerTwo, 3);
         playerTwoPerm.forEach((element) => {
             const elemReduce = element.reduce((sum, current) => sum + current, 0);
             if (elemReduce === 15) {
-                console.log("player two wins");
+                win = true;
+            }
+            else {
+                win = false;
             }
         });
     }
-    else {
-        console.log("no winner");
-    }
+    return win;
 };
 const insertMove = (gameBoard, symbol, position) => {
     const playerOne = initPlayer(1);
@@ -54,7 +60,10 @@ const insertMove = (gameBoard, symbol, position) => {
     else {
         playerTwoPositions.push(gameState[position]);
     }
-    winCondition(playerOnePositions, playerTwoPositions);
+    console.log(playerOnePositions);
+    console.log(playerTwoPositions);
+    const winC = winCondition(playerOnePositions, playerTwoPositions);
+    console.log(winC);
     gameState.splice(position, 1, symbol);
     const openPositions = gameState.filter((s) => s != "X" && s != "O");
     // console.log(playerOnePositions);
