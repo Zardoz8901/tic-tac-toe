@@ -50,6 +50,15 @@ const winCondition = (playerOne, playerTwo) => {
   return win;
 };
 
+const displayCondition = (playerOne, playerTwo, symbol, win) => {
+  if (symbol === "X" && win === true) {
+    console.log("Player One Wins!");
+  } else if (symbol === "O" && win === true) {
+    console.log("Player Two Wins!");
+  } else if (playerOne.length + playerTwo.length === 9 && win === false)
+    console.log("Draw!");
+};
+
 const insertMove = (gameBoard: number[], symbol: string, position) => {
   const playerOne = initPlayer(1);
   const playerTwo = initPlayer(2);
@@ -64,7 +73,7 @@ const insertMove = (gameBoard: number[], symbol: string, position) => {
   console.log(playerOnePositions);
   console.log(playerTwoPositions);
   const winC = winCondition(playerOnePositions, playerTwoPositions);
-  console.log(winC);
+  displayCondition(playerOnePositions, playerTwoPositions, symbol, winC);
   gameState.splice(position, 1, symbol);
   const openPositions = gameState.filter((s) => s != "X" && s != "O");
   // console.log(playerOnePositions);
