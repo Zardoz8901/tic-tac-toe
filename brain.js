@@ -1,4 +1,17 @@
 "use strict";
+const modalDialog = () => {
+    const startGame = document.getElementById("click-to-play");
+    const startDialog = document.getElementById("start-dialog");
+    const confirmButton = (document.getElementById("confirm-button"));
+    const playerOneName = document.querySelector("#player1");
+    const playerTwoName = document.querySelector("#player2");
+    startGame.addEventListener("click", () => {
+        startDialog.showModal();
+    });
+    confirmButton.addEventListener("click", () => {
+        startDialog.close();
+    });
+};
 const initGameboard = () => {
     // Magic Square
     const gameBoard = [8, 1, 6, 3, 5, 7, 4, 9, 2];
@@ -101,6 +114,7 @@ const gridSelector = (newGame) => {
     });
 };
 const gameFlow = (() => {
+    modalDialog();
     const newGame = initGameboard();
     const gridSelect = gridSelector(newGame);
 })();
