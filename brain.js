@@ -8,7 +8,37 @@ const modalDialog = () => {
     startGame.addEventListener("click", () => {
         startDialog.showModal();
     });
-    confirmButton.addEventListener("click", () => {
+    playerOneName.addEventListener("keydown", (e) => {
+        playerOneName.classList.remove("required-border");
+    });
+    playerTwoName.addEventListener("keydown", (e) => {
+        playerTwoName.classList.remove("required-border");
+    });
+    playerOneName.addEventListener("webkitAnimationEnd", (e) => {
+        playerOneName.classList.remove("required-animation");
+        playerOneName.classList.add("required-border");
+    });
+    playerTwoName.addEventListener("webkitAnimationEnd", (e) => {
+        playerTwoName.classList.remove("required-animation");
+        playerTwoName.classList.add("required-border");
+    });
+    confirmButton.addEventListener("click", (e) => {
+        if (playerOneName.value === "" && playerTwoName.value === "") {
+            playerOneName.classList.add("required-animation");
+            playerTwoName.classList.add("required-animation");
+            e.preventDefault();
+            return;
+        }
+        if (playerOneName.value === "") {
+            playerOneName.classList.add("required-animation");
+            e.preventDefault();
+            return;
+        }
+        if (playerTwoName.value === "") {
+            playerTwoName.classList.add("required-animation");
+            e.preventDefault();
+            return;
+        }
         startDialog.close();
     });
 };

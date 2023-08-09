@@ -1,15 +1,45 @@
 const modalDialog = () => {
   const startGame = <HTMLInputElement>document.getElementById("click-to-play");
   const startDialog = <HTMLInputElement>document.getElementById("start-dialog");
-  const confirmButton = <HTMLInputElement>(
+  const confirmButton = <HTMLButtonElement>(
     document.getElementById("confirm-button")
   );
-  const playerOneName = document.querySelector("#player1");
-  const playerTwoName = document.querySelector("#player2");
+  const playerOneName = <HTMLInputElement>document.querySelector("#player1");
+  const playerTwoName = <HTMLInputElement>document.querySelector("#player2");
   startGame.addEventListener("click", () => {
     startDialog.showModal();
   });
-  confirmButton.addEventListener("click", () => {
+  playerOneName.addEventListener("keydown", (e) => {
+    playerOneName.classList.remove("required-border");
+  });
+  playerTwoName.addEventListener("keydown", (e) => {
+    playerTwoName.classList.remove("required-border");
+  });
+  playerOneName.addEventListener("webkitAnimationEnd", (e) => {
+    playerOneName.classList.remove("required-animation");
+    playerOneName.classList.add("required-border");
+  });
+  playerTwoName.addEventListener("webkitAnimationEnd", (e) => {
+    playerTwoName.classList.remove("required-animation");
+    playerTwoName.classList.add("required-border");
+  });
+  confirmButton.addEventListener("click", (e) => {
+    if (playerOneName.value === "" && playerTwoName.value === "") {
+      playerOneName.classList.add("required-animation");
+      playerTwoName.classList.add("required-animation");
+      e.preventDefault();
+      return;
+    }
+    if (playerOneName.value === "") {
+      playerOneName.classList.add("required-animation");
+      e.preventDefault();
+      return;
+    }
+    if (playerTwoName.value === "") {
+      playerTwoName.classList.add("required-animation");
+      e.preventDefault();
+      return;
+    }
     startDialog.close();
   });
 };
