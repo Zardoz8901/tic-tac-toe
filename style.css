@@ -55,6 +55,44 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 40px;
+}
+
+#center-column {
+  display: flex;
+  direction: row;
+  align-items: center;
+}
+
+.name-container {
+  width: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.player {
+  padding-top: 10px;
+  font-size: 60px;
+}
+
+.player-name {
+  height: 50px;
+  opacity: 0;
+  font-size: 40px;
+  display: flex;
+  flex: 1;
+}
+
+.player-name.reveal {
+  opacity: 1;
+  transition: 1s ease-in;
+}
+
+.player-symbol {
+  font-size: 120px;
 }
 
 #click-to-play,
@@ -64,20 +102,18 @@ body {
   font-size: 56px;
   background-color: lightgrey;
   color: var(--black);
-  border: 0;
+  border: 1px solid var(--black);
   transition: 0.1s ease-in-out;
 }
 
 #click-to-play:hover,
 #click-to-reset:hover {
   background-color: silver;
-  transform: scale(102%);
-  border: 2px solid var(--black);
 }
 
 #click-to-play:active,
 #click-to-reset:active {
-  background-color: gainsboro;
+  background-color: lightgray;
   transform: scale(98%);
 }
 
@@ -86,15 +122,12 @@ body {
 }
 
 :modal {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 900px;
+  width: 560px;
   height: 560px;
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-left: -450px;
+  margin-left: -280px;
   margin-top: -280px;
   color: var(--black);
   background-color: whitesmoke;
@@ -103,9 +136,44 @@ body {
   transition: 0.01s ease-in-out;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+}
+
 .modal-p > label {
   font-size: 2.6rem;
   padding: 0px;
+}
+
+.modal-p {
+  align-items: end;
+}
+
+#input-required-1,
+#input-required-2 {
+  color: firebrick;
+  opacity: 0;
+}
+
+#input-required-1.reveal,
+#input-required-2.reveal {
+  transition: 1s ease-in;
+  opacity: 1;
+}
+
+#input-required-1.fade,
+#input-required-2.fade {
+  opacity: 0;
+  transition: 1s ease-out;
+}
+
+#click-to-play.fade {
+  opacity: 0;
+  transition: 1s ease-out;
 }
 
 .modal-p2 {
@@ -113,6 +181,11 @@ body {
   flex-direction: column;
   font-size: 2.2rem;
   padding: 0px;
+}
+
+.modal-p2-label {
+  display: flex;
+  justify-content: space-between;
 }
 
 .modal-p2 > input {
@@ -156,7 +229,7 @@ body {
 .required-animation {
   border: 6px solid lightcoral;
   transition: 0.2s ease-in-out;
-  animation: shake 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 .required-border {
@@ -170,8 +243,7 @@ body {
   width: 900px;
   height: 900px;
   gap: 2%;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  margin: 20px 40px;
 }
 
 #game-grid > div {

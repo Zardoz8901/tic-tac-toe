@@ -5,13 +5,20 @@ const modalDialog = () => {
     const confirmButton = (document.getElementById("confirm-button"));
     const playerOneName = document.querySelector("#player1");
     const playerTwoName = document.querySelector("#player2");
+    const playerOneNameDiv = document.querySelector("#name-1 > .player-name");
+    console.log(playerOneNameDiv);
+    const playerTwoNameDiv = document.querySelector("#name-2 > .player-name");
+    const playerOneWarn = (document.querySelector("#input-required-1"));
+    const playerTwoWarn = (document.querySelector("#input-required-2"));
     startGame.addEventListener("click", () => {
         startDialog.showModal();
     });
     playerOneName.addEventListener("keydown", (e) => {
+        playerOneWarn.classList.add("fade");
         playerOneName.classList.remove("required-border");
     });
     playerTwoName.addEventListener("keydown", (e) => {
+        playerTwoWarn.classList.add("fade");
         playerTwoName.classList.remove("required-border");
     });
     playerOneName.addEventListener("webkitAnimationEnd", (e) => {
@@ -26,19 +33,33 @@ const modalDialog = () => {
         if (playerOneName.value === "" && playerTwoName.value === "") {
             playerOneName.classList.add("required-animation");
             playerTwoName.classList.add("required-animation");
+            playerOneWarn.classList.remove("fade");
+            playerTwoWarn.classList.remove("fade");
+            playerOneWarn.classList.add("reveal");
+            playerTwoWarn.classList.add("reveal");
             e.preventDefault();
             return;
         }
         if (playerOneName.value === "") {
+            playerOneWarn.classList.remove("fade");
+            playerOneWarn.classList.add("reveal");
             playerOneName.classList.add("required-animation");
             e.preventDefault();
             return;
         }
         if (playerTwoName.value === "") {
+            playerTwoWarn.classList.add("reveal");
+            playerTwoWarn.classList.remove("fade");
             playerTwoName.classList.add("required-animation");
             e.preventDefault();
             return;
         }
+        playerOneNameDiv.innerText = playerOneName.value;
+        playerOneNameDiv.classList.add("reveal");
+        playerTwoNameDiv.innerText = playerTwoName.value;
+        playerTwoNameDiv.classList.add("reveal");
+        startGame.classList.add("fade");
+        startGame.classList.add("noclick");
         startDialog.close();
     });
 };

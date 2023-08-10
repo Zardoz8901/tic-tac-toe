@@ -15,10 +15,13 @@
           <label for="">Input Player Names</label>
         </p>
         <p class="modal-p2">
-          <label for="player1">Player 1</label>
-          <input type="text" name="player1" id="player1" />
-          <label for="player2">Player 2</label>
-          <input type="text" name="player2" id="player2" />
+          <div class="modal-p2-label">
+            <label for="player1">Player 1</label><span id="input-required-1" >Please, submit your name</span>
+          </div>
+          <input type="text" name="player1" id="player1" maxlength="13"
+            <label for="player2">Player 2</label><span id="input-required-2" >Please, submit your name</span>
+          </div>
+          <input type="text" name="player2" id="player2" maxlength="13"/>
         </p>
         <div class="modal-d">
           <button id="cancel-button" value="cancel" formmethod="dialog">
@@ -31,16 +34,28 @@
       </form>
     </dialog>
     <button id="click-to-play">Start Game?</button>
-    <div id="game-grid">
-      <div data-grid-origin="0"></div>
-      <div data-grid-origin="1"></div>
-      <div data-grid-origin="2"></div>
-      <div data-grid-origin="3"></div>
-      <div data-grid-origin="4"></div>
-      <div data-grid-origin="5"></div>
-      <div data-grid-origin="6"></div>
-      <div data-grid-origin="7"></div>
-      <div data-grid-origin="8"></div>
+    <div id="center-column">
+      <div id="name-1" class="name-container">
+        <div class="player-name"></div>
+        <div class="player">Player 1</div>
+        <div class="player-symbol">X</div>
+      </div>
+      <div id="game-grid">
+        <div data-grid-origin="0"></div>
+        <div data-grid-origin="1"></div>
+        <div data-grid-origin="2"></div>
+        <div data-grid-origin="3"></div>
+        <div data-grid-origin="4"></div>
+        <div data-grid-origin="5"></div>
+        <div data-grid-origin="6"></div>
+        <div data-grid-origin="7"></div>
+        <div data-grid-origin="8"></div>
+      </div>
+      <div id="name-2" class="name-container">
+        <div class="player-name"></div>
+        <div class="player">Player 2</div>
+        <div class="player-symbol">O</div>
+      </div>
     </div>
     <button id="click-to-reset">Reset</button>
   </body>
