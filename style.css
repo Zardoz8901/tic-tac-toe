@@ -82,13 +82,11 @@ body {
   height: 50px;
   opacity: 0;
   font-size: 40px;
-  display: flex;
-  flex: 1;
 }
 
 .player-name.reveal {
   opacity: 1;
-  transition: 1s ease-in;
+  transition: 0.8s ease-in;
 }
 
 .player-symbol {
@@ -161,19 +159,19 @@ form {
 
 #input-required-1.reveal,
 #input-required-2.reveal {
-  transition: 1s ease-in;
+  transition: 0.8s ease-in;
   opacity: 1;
 }
 
 #input-required-1.fade,
 #input-required-2.fade {
   opacity: 0;
-  transition: 1s ease-out;
+  transition: 0.8s ease-out;
 }
 
 #click-to-play.fade {
   opacity: 0;
-  transition: 1s ease-out;
+  transition: 0.8s ease-out;
 }
 
 .modal-p2 {
@@ -234,6 +232,11 @@ form {
 
 .required-border {
   border: 6px solid lightcoral;
+}
+
+#start-dialog.fade {
+  opacity: 0;
+  transition: 0.8s ease-out;
 }
 
 #game-grid {

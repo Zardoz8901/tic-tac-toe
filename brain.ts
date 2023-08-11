@@ -1,6 +1,8 @@
 const modalDialog = () => {
   const startGame = <HTMLInputElement>document.getElementById("click-to-play");
-  const startDialog = <HTMLInputElement>document.getElementById("start-dialog");
+  const startDialog = <HTMLDialogElement>(
+    document.getElementById("start-dialog")
+  );
   const confirmButton = <HTMLButtonElement>(
     document.getElementById("confirm-button")
   );
@@ -9,7 +11,6 @@ const modalDialog = () => {
   const playerOneNameDiv = document.querySelector(
     "#name-1 > .player-name"
   ) as HTMLDivElement;
-  console.log(playerOneNameDiv);
   const playerTwoNameDiv = document.querySelector(
     "#name-2 > .player-name"
   ) as HTMLDivElement;
@@ -21,6 +22,17 @@ const modalDialog = () => {
   );
   startGame.addEventListener("click", () => {
     startDialog.showModal();
+  });
+  startDialog.addEventListener("keydown", (e) => {
+    if (
+      e.key === "Enter" &&
+      playerOneName.value !== "" &&
+      playerTwoName.value !== ""
+    ) {
+      confirmButton.click();
+      startDialog.classList.add("fade");
+      startDialog.close();
+    }
   });
   playerOneName.addEventListener("keydown", (e) => {
     playerOneWarn.classList.add("fade");
@@ -63,7 +75,6 @@ const modalDialog = () => {
       e.preventDefault();
       return;
     }
-
     playerOneNameDiv.innerText = playerOneName.value;
     playerOneNameDiv.classList.add("reveal");
     playerTwoNameDiv.innerText = playerTwoName.value;
@@ -72,6 +83,8 @@ const modalDialog = () => {
     startGame.classList.add("noclick");
     startDialog.close();
   });
+  // requires async await
+  // return { playerOneNameDiv, playerTwoNameDiv };
 };
 
 const initGameboard = () => {
@@ -126,18 +139,34 @@ const winCondition = (playerOne, playerTwo) => {
   return win;
 };
 
-const displayCondition = (playerOne, playerTwo, symbol, win) => {
+const displayCondition = (
+  playerOneName,
+  playerTwoName,
+  playerOneArray,
+  playerTwoArray,
+  symbol,
+  win
+) => {
   if (symbol === "X" && win === true) {
-    console.log("Player One Wins!");
+    console.log(`${playerOneName} Wins!`);
   } else if (symbol === "O" && win === true) {
-    console.log("Player Two Wins!");
-  } else if (playerOne.length + playerTwo.length === 9 && win === false)
+    console.log(`${playerTwoName} Wins!`);
+  } else if (
+    playerOneArray.length + playerTwoArray.length === 9 &&
+    win === false
+  )
     console.log("Draw!");
 };
 
-const insertMove = (gameBoard: number[], symbol: string, position) => {
-  const playerOne = initPlayer(1);
-  const playerTwo = initPlayer(2);
+const insertMove = (
+  gameBoard: number[],
+  symbol: string,
+  position: number,
+  playerOne,
+  playerTwo
+) => {
+  const playerOneName = playerOne.innerText;
+  const playerTwoName = playerTwo.innerText;
   const gameState = gameBoard.gameBoard;
   const playerOnePositions = gameBoard.playerOnePositions;
   const playerTwoPositions = gameBoard.playerTwoPositions;
@@ -146,10 +175,15 @@ const insertMove = (gameBoard: number[], symbol: string, position) => {
   } else {
     playerTwoPositions.push(gameState[position]);
   }
-  console.log(playerOnePositions);
-  console.log(playerTwoPositions);
   const winC = winCondition(playerOnePositions, playerTwoPositions);
-  displayCondition(playerOnePositions, playerTwoPositions, symbol, winC);
+  displayCondition(
+    playerOneName,
+    playerTwoName,
+    playerOnePositions,
+    playerTwoPositions,
+    symbol,
+    winC
+  );
   gameState.splice(position, 1, symbol);
   const openPositions = gameState.filter((s) => s != "X" && s != "O");
   // console.log(playerOnePositions);
@@ -161,25 +195,44 @@ const gridSelector = (newGame) => {
   const gridList = document.querySelectorAll("#game-grid> div");
   const gridArray = [...gridList];
   const moveTracker = [];
+  const playerOneNameDiv = document.querySelector(
+    "#name-1 > .player-name"
+  ) as HTMLDivElement;
+  const playerTwoNameDiv = document.querySelector(
+    "#name-2 > .player-name"
+  ) as HTMLDivElement;
   gridArray.forEach((div) => {
     div.addEventListener("click", () => {
-      const gridOrigin = div.dataset.gridOrigin;
-      moveTracker.push(gridOrigin);
-      // implement player turn rotation
-      let symbol = "X";
-      if (moveTracker.length % 2 === 0) {
-        symbol = "O";
+      if (
+        playerOneNameDiv.innerText !== "" &&
+        playerTwoNameDiv.innerText !== ""
+      ) {
+        const gridOrigin = div.dataset.gridOrigin;
+        moveTracker.push(gridOrigin);
+        // implement player turn rotation
+        let symbol = "X";
+        if (moveTracker.length % 2 === 0) {
+          symbol = "O";
+        }
+        //  inject player symbol
+        div.classList.add("noclick");
+        div.textContent = symbol;
+        return insertMove(
+          newGame,
+          symbol,
+          gridOrigin,
+          playerOneNameDiv,
+          playerTwoNameDiv
+        );
+      } else {
+        return;
       }
-      //  inject player symbol
-      div.classList.add("noclick");
-      div.textContent = symbol;
-      return insertMove(newGame, symbol, gridOrigin);
     });
   });
 };
 
 const gameFlow = (() => {
-  modalDialog();
+  const newDialog = modalDialog();
   const newGame = initGameboard();
   const gridSelect = gridSelector(newGame);
 })();
