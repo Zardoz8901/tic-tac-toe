@@ -140,33 +140,49 @@ const winCondition = (playerOne, playerTwo) => {
 };
 
 const displayCondition = (
-  playerOneName,
-  playerTwoName,
+  playerOneProclamation,
+  playerTwoProclamation,
   playerOneArray,
   playerTwoArray,
   symbol,
   win
 ) => {
+  const gridList = document.querySelectorAll("#game-grid> div");
+  const gridArray = [...gridList];
+
   if (symbol === "X" && win === true) {
-    console.log(`${playerOneName} Wins!`);
+    playerOneProclamation.innerText = "Winner";
+    playerTwoProclamation.innerText = "Loser";
   } else if (symbol === "O" && win === true) {
-    console.log(`${playerTwoName} Wins!`);
+    playerOneProclamation.innerText = "Loser";
+    playerTwoProclamation.innerText = "Winner";
   } else if (
     playerOneArray.length + playerTwoArray.length === 9 &&
     win === false
-  )
-    console.log("Draw!");
+  ) {
+    playerOneProclamation.innerText = "Draw";
+    playerTwoProclamation.innerText = "Draw";
+  }
+  gridArray.forEach((div) => {
+    if (
+      playerOneProclamation.innerText === "Winner" ||
+      playerOneProclamation.innerText === "Loser" ||
+      playerOneProclamation.innerText === "Draw"
+    ) {
+      playerOneProclamation.classList.add("reveal");
+      playerTwoProclamation.classList.add("reveal");
+      div.classList.add("noclick");
+    }
+  });
 };
 
-const insertMove = (
-  gameBoard: number[],
-  symbol: string,
-  position: number,
-  playerOne,
-  playerTwo
-) => {
-  const playerOneName = playerOne.innerText;
-  const playerTwoName = playerTwo.innerText;
+const insertMove = (gameBoard: number[], symbol: string, position: number) => {
+  const playerOneProclamation = document.querySelector(
+    "#name-1 > .proclamation"
+  ) as HTMLDivElement;
+  const playerTwoProclamation = document.querySelector(
+    "#name-2 > .proclamation"
+  ) as HTMLDivElement;
   const gameState = gameBoard.gameBoard;
   const playerOnePositions = gameBoard.playerOnePositions;
   const playerTwoPositions = gameBoard.playerTwoPositions;
@@ -177,8 +193,8 @@ const insertMove = (
   }
   const winC = winCondition(playerOnePositions, playerTwoPositions);
   displayCondition(
-    playerOneName,
-    playerTwoName,
+    playerOneProclamation,
+    playerTwoProclamation,
     playerOnePositions,
     playerTwoPositions,
     symbol,
@@ -217,13 +233,7 @@ const gridSelector = (newGame) => {
         //  inject player symbol
         div.classList.add("noclick");
         div.textContent = symbol;
-        return insertMove(
-          newGame,
-          symbol,
-          gridOrigin,
-          playerOneNameDiv,
-          playerTwoNameDiv
-        );
+        return insertMove(newGame, symbol, gridOrigin);
       } else {
         return;
       }
