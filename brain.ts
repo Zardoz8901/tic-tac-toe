@@ -31,6 +31,7 @@ const modalDialog = () => {
     ) {
       confirmButton.click();
       startDialog.classList.add("fade");
+      e.preventDefault();
       startDialog.close();
     }
   });
@@ -116,28 +117,62 @@ const winCondition = (playerOne, playerTwo) => {
         : [[v]]
     );
   };
-  if (win === false) {
-    const playerOnePerm = perm(playerOne, 3);
-    const playerTwoPerm = perm(playerTwo, 3);
+  const playerOnePerm = perm(playerOne, 3);
+  const playerTwoPerm = perm(playerTwo, 3);
     playerOnePerm.forEach((element) => {
       const elemReduce = element.reduce((sum, current) => sum + current, 0);
+      console.log(elemReduce"1")
+      if (elemReduce === 15) {
+      win = true;
+      } else if (win === false){
+      playerTwoPerm.forEach((element) => {
+      const elemReduce = element.reduce((sum, current) => sum + current, 0)
       if (elemReduce === 15) {
         win = true;
-      } else {
+        } else {
         win = false;
-      }
-    });
-    playerTwoPerm.forEach((element) => {
-      const elemReduce = element.reduce((sum, current) => sum + current, 0);
-      if (elemReduce === 15) {
-        win = true;
-      } else {
-        win = false;
-      }
-    });
-  }
+        }
+      });
+    } 
+  });  
   return win;
 };
+
+const resetDisplay = (playerOneWinStatus, playerTwoWinStatus, div) => {
+  const resetButton = document.getElementById("click-to-reset");
+  resetButton?.addEventListener("click", () => {
+    playerOneWinStatus.classList.remove("reveal");
+    playerTwoWinStatus.classList.remove("reveal");
+    playerOneWinStatus.classList.add("fade");
+    playerTwoWinStatus.classList.add("fade");
+    playerOneWinStatus.innerText = "";
+    playerTwoWinStatus.innerText = "";
+    div.classList.remove("noclick");
+  });
+};
+
+const resetMoves = (gameBoard) => {
+  const resetButton = document.getElementById("click-to-reset");
+  resetButton?.addEventListener("click", () => {
+    gameBoard.gameBoard = [8, 1, 6, 3, 5, 7, 4, 9, 2];
+    gameBoard.playerOnePositions = [];
+    gameBoard.playerTwoPositions = [];
+  });
+};
+
+const resetBoard = (div) => {
+  const resetButton = document.getElementById("click-to-reset");
+  resetButton?.addEventListener("click", () => {
+    div.textContent = "";
+  });
+};
+
+const resetMoveTracker = (moveTracker) => {
+  const resetButton = document.getElementById("click-to-reset");
+  resetButton?.addEventListener("click", () => {
+    moveTracker = [];
+  })
+}
 
 const displayCondition = (
   playerOneProclamation,
@@ -149,7 +184,7 @@ const displayCondition = (
 ) => {
   const gridList = document.querySelectorAll("#game-grid> div");
   const gridArray = [...gridList];
-
+  const resetButton = document.getElementById("click-to-reset");
   if (symbol === "X" && win === true) {
     playerOneProclamation.innerText = "Winner";
     playerTwoProclamation.innerText = "Loser";
@@ -169,9 +204,13 @@ const displayCondition = (
       playerOneProclamation.innerText === "Loser" ||
       playerOneProclamation.innerText === "Draw"
     ) {
+      playerOneProclamation.classList.remove("fade");
+      playerTwoProclamation.classList.remove("fade");
       playerOneProclamation.classList.add("reveal");
       playerTwoProclamation.classList.add("reveal");
       div.classList.add("noclick");
+      resetButton?.classList.add("reveal");
+      resetDisplay(playerOneProclamation, playerTwoProclamation, div);
     }
   });
 };
@@ -202,21 +241,26 @@ const insertMove = (gameBoard: number[], symbol: string, position: number) => {
   );
   gameState.splice(position, 1, symbol);
   const openPositions = gameState.filter((s) => s != "X" && s != "O");
-  // console.log(playerOnePositions);
-  // console.log(playerTwoPositions);
+  console.log(playerOnePositions);
+  console.log(playerTwoPositions);
   return { gameBoard, openPositions, playerOnePositions };
 };
 
-const gridSelector = (newGame) => {
+const gridSelector = (gameBoard) => {
   const gridList = document.querySelectorAll("#game-grid> div");
   const gridArray = [...gridList];
-  const moveTracker = [];
+  let moveTracker: number[] = [];
   const playerOneNameDiv = document.querySelector(
     "#name-1 > .player-name"
   ) as HTMLDivElement;
   const playerTwoNameDiv = document.querySelector(
     "#name-2 > .player-name"
   ) as HTMLDivElement;
+  const resetButton = document.getElementById("click-to-reset");
+  resetButton?.addEventListener("click", () => {
+    moveTracker = [];
+  });
+  resetMoves(gameBoard);
   gridArray.forEach((div) => {
     div.addEventListener("click", () => {
       if (
@@ -225,6 +269,7 @@ const gridSelector = (newGame) => {
       ) {
         const gridOrigin = div.dataset.gridOrigin;
         moveTracker.push(gridOrigin);
+        console.log("move"moveTracker);
         // implement player turn rotation
         let symbol = "X";
         if (moveTracker.length % 2 === 0) {
@@ -233,7 +278,9 @@ const gridSelector = (newGame) => {
         //  inject player symbol
         div.classList.add("noclick");
         div.textContent = symbol;
-        return insertMove(newGame, symbol, gridOrigin);
+        // reset board
+        resetBoard(div);
+        return insertMove(gameBoard, symbol, gridOrigin);
       } else {
         return;
       }

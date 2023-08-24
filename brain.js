@@ -18,6 +18,7 @@ const modalDialog = () => {
             playerTwoName.value !== "") {
             confirmButton.click();
             startDialog.classList.add("fade");
+            e.preventDefault();
             startDialog.close();
         }
     });
@@ -98,33 +99,64 @@ const winCondition = (playerOne, playerTwo) => {
             ? perm(array.slice(i + 1), length - 1).map((w) => [v, ...w])
             : [[v]]);
     };
-    if (win === false) {
-        const playerOnePerm = perm(playerOne, 3);
-        const playerTwoPerm = perm(playerTwo, 3);
-        playerOnePerm.forEach((element) => {
-            const elemReduce = element.reduce((sum, current) => sum + current, 0);
-            if (elemReduce === 15) {
-                win = true;
-            }
-            else {
-                win = false;
-            }
-        });
-        playerTwoPerm.forEach((element) => {
-            const elemReduce = element.reduce((sum, current) => sum + current, 0);
-            if (elemReduce === 15) {
-                win = true;
-            }
-            else {
-                win = false;
-            }
-        });
-    }
+    const playerOnePerm = perm(playerOne, 3);
+    const playerTwoPerm = perm(playerTwo, 3);
+    playerOnePerm.forEach((element) => {
+        const elemReduce = element.reduce((sum, current) => sum + current, 0);
+        console.log(elemReduce, "1");
+        if (elemReduce === 15) {
+            win = true;
+        }
+        else if (win === false) {
+            playerTwoPerm.forEach((element) => {
+                const elemReduce = element.reduce((sum, current) => sum + current, 0);
+                if (elemReduce === 15) {
+                    win = true;
+                }
+                else {
+                    win = false;
+                }
+            });
+        }
+    });
     return win;
+};
+const resetDisplay = (playerOneWinStatus, playerTwoWinStatus, div) => {
+    const resetButton = document.getElementById("click-to-reset");
+    resetButton === null || resetButton === void 0 ? void 0 : resetButton.addEventListener("click", () => {
+        playerOneWinStatus.classList.remove("reveal");
+        playerTwoWinStatus.classList.remove("reveal");
+        playerOneWinStatus.classList.add("fade");
+        playerTwoWinStatus.classList.add("fade");
+        playerOneWinStatus.innerText = "";
+        playerTwoWinStatus.innerText = "";
+        div.classList.remove("noclick");
+    });
+};
+const resetMoves = (gameBoard) => {
+    const resetButton = document.getElementById("click-to-reset");
+    resetButton === null || resetButton === void 0 ? void 0 : resetButton.addEventListener("click", () => {
+        gameBoard.gameBoard = [8, 1, 6, 3, 5, 7, 4, 9, 2];
+        gameBoard.playerOnePositions = [];
+        gameBoard.playerTwoPositions = [];
+    });
+};
+const resetBoard = (div) => {
+    const resetButton = document.getElementById("click-to-reset");
+    resetButton === null || resetButton === void 0 ? void 0 : resetButton.addEventListener("click", () => {
+        div.textContent = "";
+    });
+};
+const resetMoveTracker = (moveTracker) => {
+    const resetButton = document.getElementById("click-to-reset");
+    resetButton === null || resetButton === void 0 ? void 0 : resetButton.addEventListener("click", () => {
+        moveTracker = [];
+    });
 };
 const displayCondition = (playerOneProclamation, playerTwoProclamation, playerOneArray, playerTwoArray, symbol, win) => {
     const gridList = document.querySelectorAll("#game-grid> div");
     const gridArray = [...gridList];
+    const resetButton = document.getElementById("click-to-reset");
     if (symbol === "X" && win === true) {
         playerOneProclamation.innerText = "Winner";
         playerTwoProclamation.innerText = "Loser";
@@ -142,9 +174,13 @@ const displayCondition = (playerOneProclamation, playerTwoProclamation, playerOn
         if (playerOneProclamation.innerText === "Winner" ||
             playerOneProclamation.innerText === "Loser" ||
             playerOneProclamation.innerText === "Draw") {
+            playerOneProclamation.classList.remove("fade");
+            playerTwoProclamation.classList.remove("fade");
             playerOneProclamation.classList.add("reveal");
             playerTwoProclamation.classList.add("reveal");
             div.classList.add("noclick");
+            resetButton === null || resetButton === void 0 ? void 0 : resetButton.classList.add("reveal");
+            resetDisplay(playerOneProclamation, playerTwoProclamation, div);
         }
     });
 };
@@ -164,22 +200,28 @@ const insertMove = (gameBoard, symbol, position) => {
     displayCondition(playerOneProclamation, playerTwoProclamation, playerOnePositions, playerTwoPositions, symbol, winC);
     gameState.splice(position, 1, symbol);
     const openPositions = gameState.filter((s) => s != "X" && s != "O");
-    // console.log(playerOnePositions);
-    // console.log(playerTwoPositions);
+    console.log(playerOnePositions);
+    console.log(playerTwoPositions);
     return { gameBoard, openPositions, playerOnePositions };
 };
-const gridSelector = (newGame) => {
+const gridSelector = (gameBoard) => {
     const gridList = document.querySelectorAll("#game-grid> div");
     const gridArray = [...gridList];
-    const moveTracker = [];
+    let moveTracker = [];
     const playerOneNameDiv = document.querySelector("#name-1 > .player-name");
     const playerTwoNameDiv = document.querySelector("#name-2 > .player-name");
+    const resetButton = document.getElementById("click-to-reset");
+    resetButton === null || resetButton === void 0 ? void 0 : resetButton.addEventListener("click", () => {
+        moveTracker = [];
+    });
+    resetMoves(gameBoard);
     gridArray.forEach((div) => {
         div.addEventListener("click", () => {
             if (playerOneNameDiv.innerText !== "" &&
                 playerTwoNameDiv.innerText !== "") {
                 const gridOrigin = div.dataset.gridOrigin;
                 moveTracker.push(gridOrigin);
+                console.log("move", moveTracker);
                 // implement player turn rotation
                 let symbol = "X";
                 if (moveTracker.length % 2 === 0) {
@@ -188,7 +230,9 @@ const gridSelector = (newGame) => {
                 //  inject player symbol
                 div.classList.add("noclick");
                 div.textContent = symbol;
-                return insertMove(newGame, symbol, gridOrigin);
+                // reset board
+                resetBoard(div);
+                return insertMove(gameBoard, symbol, gridOrigin);
             }
             else {
                 return;

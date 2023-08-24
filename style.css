@@ -48,6 +48,7 @@ h6 {
 }
 
 body {
+  scale: 70%;
   position: relative;
   height: 100%;
   width: 100%;
@@ -56,6 +57,10 @@ body {
   align-items: center;
   flex-direction: column;
   padding: 40px;
+}
+
+dialog:not([open]) {
+  display: none !important;
 }
 
 #center-column {
@@ -80,11 +85,17 @@ body {
   position: absolute;
   top: 300px;
   font-style: italic;
+  transition: ease-in-out;
 }
 
 .proclamation.reveal {
   opacity: 1;
-  transition: 0.8s ease-in;
+  transition: 0.8s;
+}
+
+.proclamation.fade {
+  opacity: 0;
+  transition: 0.8s;
 }
 
 .player {
@@ -131,7 +142,12 @@ body {
 }
 
 #click-to-reset {
-  visibility: hidden;
+  opacity: 0;
+}
+
+#click-to-reset.reveal {
+  transition: 0.4s ease-in-out;
+  opacity: 1;
 }
 
 :modal {
