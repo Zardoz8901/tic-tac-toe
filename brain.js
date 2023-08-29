@@ -95,7 +95,21 @@ const winCondition = (playerOne, playerTwo) => {
     // Permutation city, comment each line of the process break down how it works
     let win = false;
     const perm = (array, length) => {
-        return array.flatMap((v, i) => length > 1
+        // example [a,b,c], 2
+        // flatMap produces a new array of permutations of desired length in an array e.g. [[a,b][b,c][c,a]]
+        // callback function iterates through each element of 'array'
+        // the first element 'v = a' index 'i = 0'
+        return array.flatMap((v, i) => 
+        // if the length of is greater than 1 trigger recursion, if the length is 1 or less than 1, trigger the base case
+        length > 1
+            // slice the array from index + 1 = [b,c]
+            // length - 1 = 1, the recursive call is now perm([b,c], 1) the length has decremented by 1
+            // the map function another recursive call, 'w' represents a sub-permutation
+            // mapping to the current element 'v', resulting in '[[a,b][a,c]]'
+            // second iteration 'v = b', 'i = 1'
+            // since 'length = 1' the base case is triggered
+            // slice the array from 'i + 1' = 2 = [c], length = 1, [[b,c]]
+            // our final array of [[a,b][a,c][b,c]]
             ? perm(array.slice(i + 1), length - 1).map((w) => [v, ...w])
             : [[v]]);
     };
